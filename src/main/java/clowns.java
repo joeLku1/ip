@@ -1,6 +1,16 @@
 import java.util.Scanner;
 
 public class clowns {
+    /**
+     * Print input string with lines before and after
+     * @param s
+     */
+    public static void printString(String s) {
+        System.out.println("  ---------------------------------");
+        System.out.println(s);
+        System.out.println("  ---------------------------------\n");
+    }
+
     public static void main(String[] args) {
         String logo =
             """
@@ -24,7 +34,7 @@ public class clowns {
         System.out.println("\nWelcome, " + name + "! Let's clown together! Enter your command below:\n");
 
         boolean exitFlag = true;
-        String[] inputStore = new String[100];
+        Task[] inputStore = new Task[100];
         int count = 0;
 
         while (exitFlag) { 
@@ -33,26 +43,38 @@ public class clowns {
                 exitFlag = false;
             }
             else if (usr_input.equalsIgnoreCase("list")) {
-                System.out.println("\n  ---------------------------------");
-                System.out.println("  Here is your list of clownery:");
+                String listOutput = "  Here is your list of clownery:\n";
                 for (int i = 0; i < count; i++) {
-                    System.out.println("  " + (i + 1) + ". " + inputStore[i]);
+                    listOutput = listOutput.concat("  " + (i + 1) + ". " + inputStore[i].toString() + "\n");
                 }
-                System.out.println("  ---------------------------------\n");
+                printString(listOutput);
+            }
+            else if (usr_input.length() >= 4 && usr_input.substring(0, 4).equalsIgnoreCase("mark")) {
+                int indexMark = Integer.parseInt(usr_input.substring(5)) - 1;
+                if (indexMark >= 0 && indexMark < count) {
+                    inputStore[indexMark].markAsDone();
+                    printString("  Amazing work! Marked " + (indexMark + 1) + " as done.");
+                } else {
+                    printString("  Invalid task number to mark.");
+                }
+            }
+            else if (usr_input.length() >= 6 && usr_input.substring(0, 6).equalsIgnoreCase("unmark")) {
+                int indexUnmark = Integer.parseInt(usr_input.substring(7)) - 1;
+                if (indexUnmark >= 0 && indexUnmark < count) {
+                    inputStore[indexUnmark].markAsUndone();
+                    printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + inputStore[indexUnmark].toString());
+                } else {
+                    printString("  Invalid task number to unmark.");
+                }
             }
             else {
-                inputStore[count] = usr_input;
-                System.out.println("  ---------------------------------");
-                System.out.println("added: " + usr_input);
-                System.out.println("  ---------------------------------\n");
+                inputStore[count] = new Task(usr_input);
+                printString("  added: " + usr_input);
                 count++;
             }
         }
         
-        System.out.println("  ---------------------------------\n");
-        System.out.println("  Clowning complete.");
-        System.out.println("  Goodbye fellow clown!");
-        System.out.println("  ---------------------------------\n");
+        printString("  Clowning complete.\n  Goodbye fellow clown!");
 
         scanner.close();
     }

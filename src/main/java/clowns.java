@@ -67,10 +67,13 @@ public class clowns {
                     printString("  Invalid task number to unmark.");
                 }
             }
-            else {
-                inputStore[count] = new Task(usr_input);
+            else if (usr_input.length() >= 5 && usr_input.substring(0, 5).equalsIgnoreCase("todo ")) {
+                inputStore[count] = new Todo(usr_input.substring(5));
                 printString("  added: " + usr_input);
                 count++;
+            }
+            else {
+                printString(usr_input);
             }
         }
         

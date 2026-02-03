@@ -75,7 +75,6 @@ public class clowns {
         }
         
         printString("  Clowning complete.\n  Goodbye fellow clown!");
-
         scanner.close();
     }
 }

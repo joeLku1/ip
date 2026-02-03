@@ -77,6 +77,11 @@ public class clowns {
                 printString("  added: " + usr_input);
                 count++;
             }
+            else if (usr_input.length() >= 10 && usr_input.substring(0, 9).equalsIgnoreCase("deadline ")) {
+                inputStore[count] = new Deadlines(usr_input.substring(9));
+                printString("  added: " + usr_input);
+                count++;
+            }
             else {
                 printString(usr_input);
             }

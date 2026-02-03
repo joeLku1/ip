@@ -72,6 +72,11 @@ public class clowns {
                 printString("  added: " + usr_input);
                 count++;
             }
+            else if (usr_input.length() >= 7 && usr_input.substring(0, 6).equalsIgnoreCase("event ")) {
+                inputStore[count] = new Events(usr_input.substring(6));
+                printString("  added: " + usr_input);
+                count++;
+            }
             else {
                 printString(usr_input);
             }

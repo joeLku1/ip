@@ -81,17 +81,17 @@ public class Clowns {
             }
             else if (userInput.length() >= TODO_LEN && userInput.substring(0, TODO_LEN).equalsIgnoreCase("todo ")) {
                 inputStore[count] = new Todo(userInput.substring(5));
-                printString("  added: " + userInput);
+                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
                 count++;
             }
             else if (userInput.length() >= EVENT_LEN && userInput.substring(0, EVENT_LEN).equalsIgnoreCase("event ")) {
                 inputStore[count] = new Events(userInput.substring(6));
-                printString("  added: " + userInput);
+                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
                 count++;
             }
             else if (userInput.length() >= DEADLINE_LEN && userInput.substring(0, DEADLINE_LEN).equalsIgnoreCase("deadline ")) {
                 inputStore[count] = new Deadline(userInput.substring(9));
-                printString("  added: " + userInput);
+                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
                 count++;
             }
             else {

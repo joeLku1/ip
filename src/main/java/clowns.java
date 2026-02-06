@@ -5,16 +5,25 @@ public class Clowns {
      * Print input string with lines before and after
      * @param s
      */
+    public static final String LINE = "  ---------------------------------";
+    public static final String LINE_N = "  ---------------------------------\n";
+    public static final int MARK_LEN = 4;
+    public static final int UNMARK_LEN = 6;
+    public static final int TODO_LEN = 5;
+    public static final int EVENT_LEN = 6;
+    public static final int DEADLINE_LEN = 9;
+
+
     public static void printString(String s) {
-        System.out.println("  ---------------------------------");
+        System.out.println(LINE);
         System.out.println(s);
-        System.out.println("  ---------------------------------\n");
+        System.out.println(LINE_N);
     }
 
     public static void main(String[] args) {
         String logo =
             """
-            $$$$$$\\  $$\\       $$$$$$\\  $$\\      $$\\ $$\\   $$\\ 
+            $$$$$$\\   $$\\      $$$$$$\\   $$\\      $$\\ $$\\   $$\\ 
             $$  __$$\\ $$ |     $$  __$$\\ $$ | $\\  $$ |$$$\\  $$ | 
             $$ /  \\__|$$ |     $$ /  $$ |$$ |$$$\\ $$ |$$$$\\ $$ | 
             $$ |      $$ |     $$ |  $$ |$$ $$ $$\\$$ |$$ $$\\$$ | 
@@ -26,21 +35,21 @@ public class Clowns {
 
         System.out.println(logo);
         System.out.println("  Hello, I am clowning!");
-        System.out.println("  ---------------------------------\n");
+        System.out.println(LINE_N);
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("  Enter your name:\n"); 
         String name = scanner.nextLine();
-        System.out.println("\nWelcome, " + name + "! Let's clown together! Enter your command below:\n");
+        System.out.println("\n  Welcome, " + name + "! Let's clown together! Enter your command below:\n");
 
-        boolean exitFlag = true;
+        boolean toContinue = true;
         Task[] inputStore = new Task[100];
         int count = 0;
 
-        while (exitFlag) { 
+        while (toContinue) { 
             String userInput = scanner.nextLine();
             if (userInput.equalsIgnoreCase("exit")) {
-                exitFlag = false;
+                toContinue = false;
             }
             else if (userInput.equalsIgnoreCase("list")) {
                 String listOutput = "  Here is your list of clownery:\n";
@@ -49,7 +58,7 @@ public class Clowns {
                 }
                 printString(listOutput);
             }
-            else if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("mark")) {
+            else if (userInput.length() >= MARK_LEN && userInput.substring(0, MARK_LEN).equalsIgnoreCase("mark")) {
                 int indexMark = Integer.parseInt(userInput.substring(5)) - 1;
                 if (indexMark >= 0 && indexMark < count) {
                     inputStore[indexMark].markAsDone();
@@ -58,7 +67,7 @@ public class Clowns {
                     printString("  Invalid task number to mark.");
                 }
             }
-            else if (userInput.length() >= 6 && userInput.substring(0, 6).equalsIgnoreCase("unmark")) {
+            else if (userInput.length() >= UNMARK_LEN && userInput.substring(0, UNMARK_LEN).equalsIgnoreCase("unmark")) {
                 int indexUnmark = Integer.parseInt(userInput.substring(7)) - 1;
                 if (indexUnmark >= 0 && indexUnmark < count) {
                     inputStore[indexUnmark].markAsUndone();
@@ -67,17 +76,17 @@ public class Clowns {
                     printString("  Invalid task number to unmark.");
                 }
             }
-            else if (userInput.length() >= 5 && userInput.substring(0, 5).equalsIgnoreCase("todo ")) {
+            else if (userInput.length() >= TODO_LEN && userInput.substring(0, TODO_LEN).equalsIgnoreCase("todo ")) {
                 inputStore[count] = new Todo(userInput.substring(5));
                 printString("  added: " + userInput);
                 count++;
             }
-            else if (userInput.length() >= 7 && userInput.substring(0, 6).equalsIgnoreCase("event ")) {
+            else if (userInput.length() >= EVENT_LEN && userInput.substring(0, EVENT_LEN).equalsIgnoreCase("event ")) {
                 inputStore[count] = new Events(userInput.substring(6));
                 printString("  added: " + userInput);
                 count++;
             }
-            else if (userInput.length() >= 10 && userInput.substring(0, 9).equalsIgnoreCase("deadline ")) {
+            else if (userInput.length() >= DEADLINE_LEN && userInput.substring(0, DEADLINE_LEN).equalsIgnoreCase("deadline ")) {
                 inputStore[count] = new Deadline(userInput.substring(9));
                 printString("  added: " + userInput);
                 count++;

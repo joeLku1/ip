@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class clowns {
+public class Clowns {
     /**
      * Print input string with lines before and after
      * @param s
@@ -38,19 +38,19 @@ public class clowns {
         int count = 0;
 
         while (exitFlag) { 
-            String usr_input = scanner.nextLine();
-            if (usr_input.equalsIgnoreCase("exit")) {
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase("exit")) {
                 exitFlag = false;
             }
-            else if (usr_input.equalsIgnoreCase("list")) {
+            else if (userInput.equalsIgnoreCase("list")) {
                 String listOutput = "  Here is your list of clownery:\n";
                 for (int i = 0; i < count; i++) {
                     listOutput = listOutput.concat("  " + (i + 1) + ". " + inputStore[i].toString() + "\n");
                 }
                 printString(listOutput);
             }
-            else if (usr_input.length() >= 4 && usr_input.substring(0, 4).equalsIgnoreCase("mark")) {
-                int indexMark = Integer.parseInt(usr_input.substring(5)) - 1;
+            else if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("mark")) {
+                int indexMark = Integer.parseInt(userInput.substring(5)) - 1;
                 if (indexMark >= 0 && indexMark < count) {
                     inputStore[indexMark].markAsDone();
                     printString("  Amazing work! Marked " + (indexMark + 1) + " as done.");
@@ -58,8 +58,8 @@ public class clowns {
                     printString("  Invalid task number to mark.");
                 }
             }
-            else if (usr_input.length() >= 6 && usr_input.substring(0, 6).equalsIgnoreCase("unmark")) {
-                int indexUnmark = Integer.parseInt(usr_input.substring(7)) - 1;
+            else if (userInput.length() >= 6 && userInput.substring(0, 6).equalsIgnoreCase("unmark")) {
+                int indexUnmark = Integer.parseInt(userInput.substring(7)) - 1;
                 if (indexUnmark >= 0 && indexUnmark < count) {
                     inputStore[indexUnmark].markAsUndone();
                     printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + inputStore[indexUnmark].toString());
@@ -67,23 +67,23 @@ public class clowns {
                     printString("  Invalid task number to unmark.");
                 }
             }
-            else if (usr_input.length() >= 5 && usr_input.substring(0, 5).equalsIgnoreCase("todo ")) {
-                inputStore[count] = new Todo(usr_input.substring(5));
-                printString("  added: " + usr_input);
+            else if (userInput.length() >= 5 && userInput.substring(0, 5).equalsIgnoreCase("todo ")) {
+                inputStore[count] = new Todo(userInput.substring(5));
+                printString("  added: " + userInput);
                 count++;
             }
-            else if (usr_input.length() >= 7 && usr_input.substring(0, 6).equalsIgnoreCase("event ")) {
-                inputStore[count] = new Events(usr_input.substring(6));
-                printString("  added: " + usr_input);
+            else if (userInput.length() >= 7 && userInput.substring(0, 6).equalsIgnoreCase("event ")) {
+                inputStore[count] = new Events(userInput.substring(6));
+                printString("  added: " + userInput);
                 count++;
             }
-            else if (usr_input.length() >= 10 && usr_input.substring(0, 9).equalsIgnoreCase("deadline ")) {
-                inputStore[count] = new Deadlines(usr_input.substring(9));
-                printString("  added: " + usr_input);
+            else if (userInput.length() >= 10 && userInput.substring(0, 9).equalsIgnoreCase("deadline ")) {
+                inputStore[count] = new Deadline(userInput.substring(9));
+                printString("  added: " + userInput);
                 count++;
             }
             else {
-                printString(usr_input);
+                printString(userInput);
             }
         }
         

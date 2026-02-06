@@ -5,6 +5,18 @@ public class Clowns {
      * Print input string with lines before and after
      * @param s
      */
+
+    public static final String LOGO =
+            """
+            $$$$$$\\   $$\\      $$$$$$\\   $$\\      $$\\ $$\\   $$\\ 
+            $$  __$$\\ $$ |     $$  __$$\\ $$ | $\\  $$ |$$$\\  $$ | 
+            $$ /  \\__|$$ |     $$ /  $$ |$$ |$$$\\ $$ |$$$$\\ $$ | 
+            $$ |      $$ |     $$ |  $$ |$$ $$ $$\\$$ |$$ $$\\$$ | 
+            $$ |      $$ |     $$ |  $$ |$$$$  _$$$$ |$$ \\$$$$ | 
+            $$ |  $$\\ $$ |     $$ |  $$ |$$$  / \\$$$ |$$ |\\$$$ | 
+            \\$$$$$$  |$$$$$$$$\\ $$$$$$  |$$  /   \\$$ |$$ | \\$$ | 
+             \\______/ \\________|\\______/ \\__/     \\__|\\__|  \\__| 
+            """;
     public static final String LINE = "  ---------------------------------";
     public static final String LINE_N = "  ---------------------------------\n";
     public static final int MARK_LEN = 4;
@@ -21,19 +33,7 @@ public class Clowns {
     }
 
     public static void main(String[] args) {
-        String logo =
-            """
-            $$$$$$\\   $$\\      $$$$$$\\   $$\\      $$\\ $$\\   $$\\ 
-            $$  __$$\\ $$ |     $$  __$$\\ $$ | $\\  $$ |$$$\\  $$ | 
-            $$ /  \\__|$$ |     $$ /  $$ |$$ |$$$\\ $$ |$$$$\\ $$ | 
-            $$ |      $$ |     $$ |  $$ |$$ $$ $$\\$$ |$$ $$\\$$ | 
-            $$ |      $$ |     $$ |  $$ |$$$$  _$$$$ |$$ \\$$$$ | 
-            $$ |  $$\\ $$ |     $$ |  $$ |$$$  / \\$$$ |$$ |\\$$$ | 
-            \\$$$$$$  |$$$$$$$$\\ $$$$$$  |$$  /   \\$$ |$$ | \\$$ | 
-             \\______/ \\________|\\______/ \\__/     \\__|\\__|  \\__| 
-        """;
-
-        System.out.println(logo);
+        System.out.println(LOGO);
         System.out.println("  Hello, I am clowning!");
         System.out.println(LINE_N);
 
@@ -46,7 +46,10 @@ public class Clowns {
         Task[] inputStore = new Task[100];
         int count = 0;
 
-        while (toContinue) { 
+        while (toContinue) {
+            if (!scanner.hasNextLine()) {
+                break;
+            }
             String userInput = scanner.nextLine();
             if (userInput.equalsIgnoreCase("exit")) {
                 toContinue = false;

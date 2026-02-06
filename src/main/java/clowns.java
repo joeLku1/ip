@@ -1,22 +1,17 @@
 import java.util.Scanner;
 
 public class Clowns {
-    /**
-     * Print input string with lines before and after
-     * @param s
-     */
-
     public static final String LOGO =
-            """
-            $$$$$$\\   $$\\      $$$$$$\\   $$\\      $$\\ $$\\   $$\\ 
-            $$  __$$\\ $$ |     $$  __$$\\ $$ | $\\  $$ |$$$\\  $$ | 
-            $$ /  \\__|$$ |     $$ /  $$ |$$ |$$$\\ $$ |$$$$\\ $$ | 
-            $$ |      $$ |     $$ |  $$ |$$ $$ $$\\$$ |$$ $$\\$$ | 
-            $$ |      $$ |     $$ |  $$ |$$$$  _$$$$ |$$ \\$$$$ | 
-            $$ |  $$\\ $$ |     $$ |  $$ |$$$  / \\$$$ |$$ |\\$$$ | 
-            \\$$$$$$  |$$$$$$$$\\ $$$$$$  |$$  /   \\$$ |$$ | \\$$ | 
-             \\______/ \\________|\\______/ \\__/     \\__|\\__|  \\__| 
-            """;
+        """
+        $$$$$$\\   $$\\      $$$$$$\\   $$\\      $$\\ $$\\   $$\\ 
+        $$  __$$\\ $$ |     $$  __$$\\ $$ | $\\  $$ |$$$\\  $$ | 
+        $$ /  \\__|$$ |     $$ /  $$ |$$ |$$$\\ $$ |$$$$\\ $$ | 
+        $$ |      $$ |     $$ |  $$ |$$ $$ $$\\$$ |$$ $$\\$$ | 
+        $$ |      $$ |     $$ |  $$ |$$$$  _$$$$ |$$ \\$$$$ | 
+        $$ |  $$\\ $$ |     $$ |  $$ |$$$  / \\$$$ |$$ |\\$$$ | 
+        \\$$$$$$  |$$$$$$$$\\ $$$$$$  |$$  /   \\$$ |$$ | \\$$ | 
+        \\______/ \\________|\\______/ \\___/     \\__|\\__|  \\__| 
+        """;
     public static final String LINE = "  ---------------------------------";
     public static final String LINE_N = "  ---------------------------------\n";
     public static final int MARK_LEN = 4;
@@ -24,8 +19,11 @@ public class Clowns {
     public static final int TODO_LEN = 5;
     public static final int EVENT_LEN = 6;
     public static final int DEADLINE_LEN = 9;
-
-
+        
+    /**
+     * Print input string with lines before and after
+     * @param s
+    */
     public static void printString(String s) {
         System.out.println(LINE);
         System.out.println(s);

@@ -7,6 +7,14 @@ public class Deadline extends Task {
         this.by = description.substring(description.indexOf("/by") + OFFSET).trim();
     }
 
+    public void setBy(String by) {
+        this.by = by;
+    }
+
+    public String getBy() {
+        return this.by;
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + this.by + ")";

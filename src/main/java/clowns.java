@@ -16,10 +16,10 @@ public class Clowns {
     public static final String LINE_N = "  ---------------------------------\n";
     public static final int MARK_LEN = 4;
     public static final int UNMARK_LEN = 6;
-    public static final int TODO_LEN = 5;
-    public static final int EVENT_LEN = 6;
-    public static final int DEADLINE_LEN = 9;
-        
+    public static final int TODO_LEN = 4;
+    public static final int EVENT_LEN = 5;
+    public static final int DEADLINE_LEN = 8;
+
     /**
      * Print input string with lines before and after
      * @param s
@@ -51,15 +51,13 @@ public class Clowns {
             String userInput = scanner.nextLine();
             if (userInput.equalsIgnoreCase("exit")) {
                 toContinue = false;
-            }
-            else if (userInput.equalsIgnoreCase("list")) {
+            } else if (userInput.equalsIgnoreCase("list")) {
                 String listOutput = "  Here is your list of clownery:\n";
                 for (int i = 0; i < count; i++) {
                     listOutput = listOutput.concat("  " + (i + 1) + ". " + inputStore[i].toString() + "\n");
                 }
                 printString(listOutput);
-            }
-            else if (userInput.length() >= MARK_LEN && userInput.substring(0, MARK_LEN).equalsIgnoreCase("mark")) {
+            } else if (userInput.length() >= MARK_LEN && userInput.substring(0, MARK_LEN).equalsIgnoreCase("mark")) {
                 int indexMark = Integer.parseInt(userInput.substring(5)) - 1;
                 if (indexMark >= 0 && indexMark < count) {
                     inputStore[indexMark].markAsDone();
@@ -67,8 +65,7 @@ public class Clowns {
                 } else {
                     printString("  Invalid task number to mark.");
                 }
-            }
-            else if (userInput.length() >= UNMARK_LEN && userInput.substring(0, UNMARK_LEN).equalsIgnoreCase("unmark")) {
+            } else if (userInput.length() >= UNMARK_LEN && userInput.substring(0, UNMARK_LEN).equalsIgnoreCase("unmark")) {
                 int indexUnmark = Integer.parseInt(userInput.substring(7)) - 1;
                 if (indexUnmark >= 0 && indexUnmark < count) {
                     inputStore[indexUnmark].markAsUndone();
@@ -76,24 +73,32 @@ public class Clowns {
                 } else {
                     printString("  Invalid task number to unmark.");
                 }
-            }
-            else if (userInput.length() >= TODO_LEN && userInput.substring(0, TODO_LEN).equalsIgnoreCase("todo ")) {
-                inputStore[count] = new Todo(userInput.substring(5));
-                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
-                count++;
-            }
-            else if (userInput.length() >= EVENT_LEN && userInput.substring(0, EVENT_LEN).equalsIgnoreCase("event ")) {
-                inputStore[count] = new Events(userInput.substring(6));
-                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
-                count++;
-            }
-            else if (userInput.length() >= DEADLINE_LEN && userInput.substring(0, DEADLINE_LEN).equalsIgnoreCase("deadline ")) {
-                inputStore[count] = new Deadline(userInput.substring(9));
-                printString("  added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
-                count++;
-            }
-            else {
-                printString(userInput);
+            } else if (userInput.length() >= TODO_LEN && userInput.substring(0, TODO_LEN).equalsIgnoreCase("todo")) {
+                try {
+                    inputStore[count] = new Todo(userInput.substring(5));
+                    printString("  todo added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
+                    count++;
+                } catch (StringIndexOutOfBoundsException e) {
+                    printString("  Stop clowning, what are you todo-ing? >:(");
+                }
+            } else if (userInput.length() >= DEADLINE_LEN && userInput.substring(0, DEADLINE_LEN).equalsIgnoreCase("deadline")) {
+                try {
+                    inputStore[count] = new Deadline(userInput.substring(9));
+                    printString("  deadline added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
+                    count++;
+                } catch (StringIndexOutOfBoundsException e) {
+                    printString("  Stop clowning, an empty deadline?? >:(");
+                }
+            } else if (userInput.length() >= EVENT_LEN && userInput.substring(0, EVENT_LEN).equalsIgnoreCase("event")) {
+                try {
+                    inputStore[count] = new Events(userInput.substring(6));
+                    printString("  event added: " + userInput + "\n  You now have " + (count + 1) + " clownery in total.");
+                    count++;
+                } catch (StringIndexOutOfBoundsException e) {
+                    printString("  Stop clowning, what event is this? >:(");
+                }
+            } else {
+                printString("  What a clown, unknown command");
             }
         }
         

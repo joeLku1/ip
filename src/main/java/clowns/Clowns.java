@@ -1,4 +1,10 @@
+package clowns;
 import java.util.Scanner;
+
+import clowns.task.Deadline;
+import clowns.task.Events;
+import clowns.task.Task;
+import clowns.task.Todo;
 
 public class Clowns {
     public static final String LOGO =
@@ -101,7 +107,6 @@ public class Clowns {
                 printString("  What a clown, unknown command");
             }
         }
-        
         printString("  Clowning complete.\n  Goodbye fellow clown!");
         scanner.close();
     }

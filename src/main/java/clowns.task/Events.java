@@ -1,3 +1,4 @@
+package clowns.task;
 public class Events extends Task {
     protected static final int OFFSET_FROM = 5;
     protected static final int OFFSET_TO = 3;

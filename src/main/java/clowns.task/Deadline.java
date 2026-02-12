@@ -1,3 +1,4 @@
+package clowns.task;
 public class Deadline extends Task {
     protected String by;
     protected static final int OFFSET = 3;

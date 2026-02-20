@@ -1,10 +1,9 @@
 package clowns;
-import java.util.Scanner;
-
 import clowns.task.Deadline;
 import clowns.task.Events;
 import clowns.task.Task;
 import clowns.task.Todo;
+import java.util.Scanner;
 
 public class Clowns {
     public static final String LOGO =
@@ -25,6 +24,7 @@ public class Clowns {
     public static final int TODO_LEN = 4;
     public static final int EVENT_LEN = 5;
     public static final int DEADLINE_LEN = 8;
+    public static final int DELETE_LEN = 6;
 
     /**
      * Print input string with lines before and after
@@ -103,8 +103,25 @@ public class Clowns {
                 } catch (StringIndexOutOfBoundsException e) {
                     printString("  Stop clowning, what event is this? >:(");
                 }
+            } else if (userInput.length() >= DELETE_LEN && userInput.substring(0, DELETE_LEN).equalsIgnoreCase("delete")) {
+                try {
+                    int indexDelete = Integer.parseInt(userInput.substring(7)) - 1;
+                    if (indexDelete >= 0 && indexDelete < count) {
+                        String deletedTask = inputStore[indexDelete].toString();
+                        for (int i = indexDelete; i < count - 1; i++) {
+                            inputStore[i] = inputStore[i + 1];
+                        }
+                        inputStore[count - 1] = null;
+                        count--;
+                        printString("  Deleted task: " + deletedTask + "\n  You now have " + count + " clownery in total.");
+                    } else {
+                        printString("  Invalid task number to delete.");
+                    }
+                } catch (NumberFormatException e) {
+                    printString("  Stop clowning, what task number do you want to delete? >:(");
+                }
             } else {
-                printString("  What a clown, unknown command");
+                printString("  Invalid command, absoulte clownery.");
             }
         }
         printString("  Clowning complete.\n  Goodbye fellow clown!");

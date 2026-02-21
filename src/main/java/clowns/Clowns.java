@@ -19,14 +19,17 @@ public class Clowns {
         \\$$$$$$  |$$$$$$$$\\ $$$$$$  |$$  /   \\$$ |$$ | \\$$ | 
         \\______/ \\________|\\______/ \\___/     \\__|\\__|  \\__| 
         """;
-    public static final String LINE = "  ---------------------------------";
-    public static final String LINE_N = "  ---------------------------------\n";
-    public static final int MARK_LEN = 4;
-    public static final int UNMARK_LEN = 6;
-    public static final int TODO_LEN = 4;
-    public static final int EVENT_LEN = 5;
-    public static final int DEADLINE_LEN = 8;
-    public static final int DELETE_LEN = 6;
+    private static final String LINE = "  ---------------------------------";
+    private static final String LINE_N = "  ---------------------------------\n";
+    private static final int MARK_LEN = 4;
+    private static final int UNMARK_LEN = 6;
+    private static final int TODO_LEN = 4;
+    private static final int EVENT_LEN = 5;
+    private static final int DEADLINE_LEN = 8;
+    private static final int DELETE_LEN = 6;
+
+    private static List<Task> inputStore;
+    private static clowns.handler.FileHandler fileHandler;
 
     /**
      * Print input string with lines before and after
@@ -38,20 +41,47 @@ public class Clowns {
         System.out.println(LINE_N);
     }
 
-    public static void main(String[] args) {
-        System.out.println(LOGO);
-        System.out.println("  Hello, I am clowning!");
-        System.out.println(LINE_N);
+    public static void writeToFile() {
+        StringBuilder data = new StringBuilder();
+        for (Task task : inputStore) {
+            data.append(task.toString()).append("\n");
+        }
+        fileHandler.writeToFile(data.toString());
+    }
 
+    public static void loadFromFile() {
+        String data = fileHandler.readFromFile();
+        if (data.isEmpty()) {
+            return;
+        }
+        String[] lines = data.split("\n");
+        for (String line : lines) {
+            if (line.startsWith("[T]")) {
+                inputStore.add(new Todo(line.substring(7)));
+            } else if (line.startsWith("[D]")) {
+                inputStore.add(new Deadline(line.substring(7)));
+            } else if (line.startsWith("[E]")) {
+                inputStore.add(new Events(line.substring(7)));
+            }
+        }
+    }
+
+    public static void main(String[] args) {        
+        System.out.println(LOGO + "\n  Hello, I am clowning!\n" + LINE_N);
+        
         Scanner scanner = new Scanner(System.in);
         System.out.print("  Enter your name:\n"); 
         String name = scanner.nextLine();
         System.out.println("\n  Welcome, " + name + "! Let's clown together! Enter your command below:\n");
-
+        
         boolean toContinue = true;
         // Task[] inputStore = new Task[100];
-        List<Task> inputStore = new ArrayList<>();
+        inputStore = new ArrayList<>();
         int count = 0;
+        
+        fileHandler = new clowns.handler.FileHandler();
+        fileHandler.createFile();
+        loadFromFile();
 
         while (toContinue) {
             if (!scanner.hasNextLine()) {
@@ -73,6 +103,7 @@ public class Clowns {
                     // inputStore[indexMark].markAsDone();
                     inputStore.get(indexMark).markAsDone();
                     printString("  Amazing work! Marked " + (indexMark + 1) + " as done.");
+                    writeToFile();
                 } else {
                     printString("  Invalid task number to mark.");
                 }
@@ -83,6 +114,7 @@ public class Clowns {
                     // printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + inputStore[indexUnmark].toString());
                     inputStore.get(indexUnmark).markAsUndone();
                     printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + inputStore.get(indexUnmark).toString());
+                    writeToFile();
                 } else {
                     printString("  Invalid task number to unmark.");
                 }
@@ -93,6 +125,7 @@ public class Clowns {
                     inputStore.add(new Todo(userInput.substring(5)));
                     printString("  todo added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
+                    writeToFile();
                 } catch (StringIndexOutOfBoundsException e) {
                     printString("  Stop clowning, what are you todo-ing? >:(");
                 }
@@ -103,6 +136,7 @@ public class Clowns {
                     inputStore.add(new Deadline(userInput.substring(9)));
                     printString("  deadline added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
+                    writeToFile();
                 } catch (StringIndexOutOfBoundsException e) {
                     printString("  Stop clowning, an empty deadline?? >:(");
                 }
@@ -113,6 +147,7 @@ public class Clowns {
                     inputStore.add(new Events(userInput.substring(6)));
                     printString("  event added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
+                    writeToFile();
                 } catch (StringIndexOutOfBoundsException e) {
                     printString("  Stop clowning, what event is this? >:(");
                 }
@@ -130,6 +165,7 @@ public class Clowns {
                         inputStore.remove(count - 1);
                         count--;
                         printString("  Deleted task: " + deletedTask + "\n  You now have " + count + " clownery in total.");
+                        writeToFile();
                     } else {
                         printString("  Invalid task number to delete.");
                     }

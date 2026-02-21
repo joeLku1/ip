@@ -1,5 +1,4 @@
 package clowns;
-
 import clowns.task.Deadline;
 import clowns.task.Events;
 import clowns.task.Task;

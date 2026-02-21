@@ -1,100 +1,43 @@
 package clowns.handler;
 
 import java.io.IOException;
-import java.util.Scanner;
-import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileHandler {
-    private static final String filepath = "../data/ClownList.txt";
-    private boolean fileExists = false;
-    private StringBuilder data;                 // StringBuilder to store data read from file
-    private java.util.Scanner fileRead;         // Scanner to read from file
-    private java.io.FileWriter fileWrite;       // FileWriter to write to file
-
-    /**
-     * Checks if the file exists
-     * @return true if the file exists, false otherwise
-     */
-    public boolean getfileExists() {
-        return fileExists;
-    }
-
-    /**
-     * Creates a new file if it does not exist
-     * @return true if the file was created successfully, false otherwise
-     */
-    private boolean createFile() {
-        try {
-            java.io.File file = new java.io.File(filepath);
-            file.getParentFile().mkdirs(); // Create parent directories if they don't exist
-            file.createNewFile();
-            this.fileExists = true;
-            return this.fileExists;
-        } catch (IOException e) {
-            System.out.println("Clowning occured during file creation: " + e.getMessage());
-        }
-        return this.fileExists;
-    }
-    
-    /**
-     * Initializes StringBuilder, FileWriter, Scanner for file handling
-    */
-    private void initializeFileHandling() {
-        try {
-            this.data = new StringBuilder();
-            this.fileRead = new java.util.Scanner(filepath);
-            this.fileWrite = new java.io.FileWriter(filepath);
-        } catch (IOException e) {
-            System.out.println("Clowning occured during handler initialization: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Closes Scanner and FileWriter after program exit
-     */
-    public void closeFileHandling() {
-        if (this.fileRead != null) {
-            this.fileRead.close();
-        }
-        if (this.fileWrite != null) {
-            try {
-                this.fileWrite.close();
-            } catch (IOException e) {
-                System.out.println("Clowning occured during file handling closing: " + e.getMessage());
-            }
-        }
-    }
-
+    private static final Path filepath = Paths.get("ip", "src", "main", "java", "clowns", "data", "ClownList.txt");
+   
     /**
      * Reads data from file and returns it as a string
      * @return the data read from file as a string
      */
     public String readFromFile() {
-        java.io.File file = new java.io.File(filepath);
+        java.io.File file = filepath.toFile();
+        StringBuilder data = new StringBuilder();
         if (!file.exists()) {
             return "";
         }
-        while (this.fileRead.hasNextLine()) {
-            this.data.append(this.fileRead.nextLine()).append("\n");
+        try (java.util.Scanner scanner = new java.util.Scanner(filepath)) {
+            while (scanner.hasNextLine()) {
+                data.append(scanner.nextLine()).append("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Clowning occured during file reading: " + e.getMessage());
         }
-        return this.data.toString();
+        return data.toString();
     }  
 
     /**
-     * Write to file, creates file if it does not already exist
+     * Writes contents of input string to file
+     * New data will overwrite existing data in file
      * @param data the data to be written to file
      */
-    public boolean writeToFile(String data) {
-        if (!this.fileExists) {
-            createFile();
-        }
-        try {
-            this.fileWrite = new java.io.FileWriter(filepath);
-            this.fileWrite.write(data);
-            return true;
+    public void writeToFile(String data) {
+        try (java.io.FileWriter writer = new java.io.FileWriter(filepath.toFile())) {
+            writer.write(data);
+            writer.flush();
         } catch (IOException e) {
             System.out.println("Clowning occured during file writing: " + e.getMessage());
         }
-        return false;
     }
 }

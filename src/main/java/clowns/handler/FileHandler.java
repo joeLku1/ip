@@ -6,6 +6,21 @@ import java.nio.file.Paths;
 
 public class FileHandler {
     private static final Path filepath = Paths.get("ip", "src", "main", "java", "clowns", "data", "ClownList.txt");
+
+    /**
+     * Creates a new file at the specified filepath
+     */
+    public void createFile() {
+        try {
+            java.io.File file = filepath.toFile();
+            if (!file.exists()) {
+                file.getParentFile().mkdirs(); // Create parent directories if they don't exist
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            System.out.println("Clowning occured during file creation: " + e.getMessage());
+        }
+    }
    
     /**
      * Reads data from file and returns it as a string

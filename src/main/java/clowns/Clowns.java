@@ -47,7 +47,6 @@ public class Clowns {
         for (Task task : inputStore) {
             data.append(task.toString()).append("\n");
         }
-        System.out.println(data.toString());
         fileHandler.writeToFile(data.toString());
     }
 
@@ -82,6 +81,7 @@ public class Clowns {
         int count = 0;
         
         fileHandler = new clowns.handler.FileHandler();
+        fileHandler.createFile();
         loadFromFile();
 
         while (toContinue) {

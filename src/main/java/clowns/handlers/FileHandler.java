@@ -7,11 +7,21 @@ import clowns.task.Todo;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
     private static final Path filepath = Paths.get( "src", "main", "java", "clowns", "data", "ClownList.txt");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MM-uuuu HHmm")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * Creates a new file at the specified filepath
@@ -60,12 +70,51 @@ public class FileHandler {
             if (line.startsWith("[T]")) {
                 inputStore.add(new Todo(line.substring(7)));
             } else if (line.startsWith("[D]")) {
-                inputStore.add(new Deadline(line.substring(7)));
+                inputStore.add(parseDeadlineFromStorage(line.substring(7)));
             } else if (line.startsWith("[E]")) {
-                inputStore.add(new Events(line.substring(7)));
+                inputStore.add(parseEventFromStorage(line.substring(7)));
             }
         }
         return inputStore;
+    }
+
+    private Deadline parseDeadlineFromStorage(String raw) {
+        int markerIndex = raw.lastIndexOf("(by:");
+        if (markerIndex == -1) {
+            throw new IllegalArgumentException("Invalid stored deadline format");
+        }
+        String description = raw.substring(0, markerIndex).trim();
+        String bySegment = raw.substring(markerIndex + 4).trim();
+        if (bySegment.endsWith(")")) {
+            bySegment = bySegment.substring(0, bySegment.length() - 1).trim();
+        }
+        LocalDateTime by = parseDateTime(bySegment);
+        return new Deadline(description, by);
+    }
+
+    private Events parseEventFromStorage(String raw) {
+        int fromIndex = raw.lastIndexOf("(from:");
+        int toIndex = raw.lastIndexOf(" to:");
+        if (fromIndex == -1 || toIndex == -1 || toIndex <= fromIndex) {
+            throw new IllegalArgumentException("Invalid stored event format");
+        }
+        String description = raw.substring(0, fromIndex).trim();
+        String fromSegment = raw.substring(fromIndex + 6, toIndex).trim();
+        String toSegment = raw.substring(toIndex + 4).trim();
+        if (toSegment.endsWith(")")) {
+            toSegment = toSegment.substring(0, toSegment.length() - 1).trim();
+        }
+        LocalDateTime from = parseDateTime(fromSegment);
+        LocalDateTime to = parseDateTime(toSegment);
+        return new Events(description, from, to);
+    }
+
+    private LocalDateTime parseDateTime(String value) {
+        try {
+            return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date-time in storage");
+        }
     }
    
     /**

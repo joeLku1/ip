@@ -96,7 +96,6 @@ public class Ui {
                 }
                 printString(listOutput);
                 break;
-
             case CommandHandler.MARK:
                 int indexMark = Integer.parseInt(commandHandler.getArgument()) - 1;
                 if (taskList.isValidIndex(indexMark)) {
@@ -107,7 +106,6 @@ public class Ui {
                     printString("  Task number " + (indexMark + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                 }
                 break;
-            
             case CommandHandler.UNMARK:
                 int indexUnmark = Integer.parseInt(commandHandler.getArgument()) - 1;
                 if (taskList.isValidIndex(indexUnmark)) {
@@ -119,25 +117,22 @@ public class Ui {
                     printString("  Task number " + (indexUnmark + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                 }
                 break;
-                
             case CommandHandler.TODO:
                 taskList.add(new Todo(commandHandler.getArgument()));
                 printString("  ToDo added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
                 storage.writeToFile(taskList.asList());
                 break;
-
             case CommandHandler.DEADLINE:
-                taskList.add(new Deadline(commandHandler.getArgument()));
+                taskList.add(new Deadline(commandHandler.getArgument(), commandHandler.getDeadlineBy()));
                 printString("  Deadline added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
                 storage.writeToFile(taskList.asList());
                 break;
-
             case CommandHandler.EVENT:
-                taskList.add(new Events(commandHandler.getArgument()));
+                taskList.add(new Events(commandHandler.getArgument(),
+                        commandHandler.getEventFrom(), commandHandler.getEventTo()));
                 printString("  Event added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
                 storage.writeToFile(taskList.asList());
                 break;
-
             case CommandHandler.DELETE:
                 int indexDelete = Integer.parseInt(commandHandler.getArgument()) - 1;
                 if (taskList.isValidIndex(indexDelete)) {

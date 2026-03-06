@@ -1,6 +1,11 @@
 package clowns.handlers;
 
 import clowns.ClownsException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 public class CommandHandler {
     public static final int EXIT = 0;
@@ -15,6 +20,14 @@ public class CommandHandler {
 
     private String currentInput;
     private String argument;
+    private LocalDateTime deadlineBy;
+    private LocalDateTime eventFrom;
+    private LocalDateTime eventTo;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MM-uuuu HHmm")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * Takes in user input and returns an integer representing the command type
@@ -25,6 +38,9 @@ public class CommandHandler {
     public int parseCommand(String input) throws ClownsException {
         this.currentInput = input.trim();
         this.argument = "";
+        this.deadlineBy = null;
+        this.eventFrom = null;
+        this.eventTo = null;
         
         if (currentInput.isEmpty()) {
             throw new ClownsException("No clownery command entered. Please enter valid clownery.");
@@ -99,20 +115,21 @@ public class CommandHandler {
      */
     private int validateDeadline(String input) throws ClownsException {
         if (input.length() <= 9 || input.substring(9).trim().isEmpty()) {
-            throw new ClownsException("Deadline description cannot be empty.\n  Usage: deadline <description> /by <date>");
+            throw new ClownsException("Deadline description cannot be empty.\n  Usage: deadline <description> /by <dd-MM-yyyy HHmm>");
         }
         String desc = input.substring(9).trim();
         if (!desc.contains("/by")) {
-            throw new ClownsException("Deadline must include '/by' followed by a date.\n  Usage: deadline <description> /by <date>");
+            throw new ClownsException("Deadline must include '/by' followed by a date-time.\n  Usage: deadline <description> /by <dd-MM-yyyy HHmm>");
         }
         String[] parts = desc.split("/by", 2);
         if (parts[0].trim().isEmpty()) {
             throw new ClownsException("Deadline description before '/by' cannot be empty.");
         }
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            throw new ClownsException("Deadline date after '/by' cannot be empty.");
+            throw new ClownsException("Deadline date-time after '/by' cannot be empty.");
         }
-        this.argument = desc;
+        this.argument = parts[0].trim();
+        this.deadlineBy = validateDateTime(parts[1].trim(), "Deadline '/by' date-time");
         return DEADLINE;
     }
 
@@ -124,14 +141,14 @@ public class CommandHandler {
      */
     private int validateEvent(String input) throws ClownsException {
         if (input.length() <= 6 || input.substring(6).trim().isEmpty()) {
-            throw new ClownsException("Event description cannot be empty.\n  Usage: event <description> /from <start> /to <end>");
+            throw new ClownsException("Event description cannot be empty.\n  Usage: event <description> /from <dd-MM-yyyy HHmm> /to <dd-MM-yyyy HHmm>");
         }
         String desc = input.substring(6).trim();
         if (!desc.contains("/from")) {
-            throw new ClownsException("Event must include '/from' followed by a start time.\n  Usage: event <description> /from <start> /to <end>");
+            throw new ClownsException("Event must include '/from' followed by a start date-time.\n  Usage: event <description> /from <dd-MM-yyyy HHmm> /to <dd-MM-yyyy HHmm>");
         }
         if (!desc.contains("/to")) {
-            throw new ClownsException("Event must include '/to' followed by an end time.\n  Usage: event <description> /from <start> /to <end>");
+            throw new ClownsException("Event must include '/to' followed by an end date-time.\n  Usage: event <description> /from <dd-MM-yyyy HHmm> /to <dd-MM-yyyy HHmm>");
         }
         String[] fromParts = desc.split("/from", 2);
         if (fromParts[0].trim().isEmpty()) {
@@ -139,13 +156,26 @@ public class CommandHandler {
         }
         String[] toParts = fromParts[1].split("/to", 2);
         if (toParts[0].trim().isEmpty()) {
-            throw new ClownsException("Event start time after '/from' cannot be empty.");
+            throw new ClownsException("Event start date-time after '/from' cannot be empty.");
         }
         if (toParts.length < 2 || toParts[1].trim().isEmpty()) {
-            throw new ClownsException("Event end time after '/to' cannot be empty.");
+            throw new ClownsException("Event end date-time after '/to' cannot be empty.");
         }
-        this.argument = desc;
+        this.eventFrom = validateDateTime(toParts[0].trim(), "Event '/from' date-time");
+        this.eventTo = validateDateTime(toParts[1].trim(), "Event '/to' date-time");
+        if (this.eventTo.isBefore(this.eventFrom)) {
+            throw new ClownsException("Event '/to' date-time cannot be earlier than '/from' date-time.");
+        }
+        this.argument = fromParts[0].trim();
         return EVENT;
+    }
+
+    private LocalDateTime validateDateTime(String value, String label) throws ClownsException {
+        try {
+            return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new ClownsException(label + " is invalid. Use format dd-MM-yyyy HHmm (24-hour), e.g. 06-03-2026 1830.");
+        }
     }
 
     /**
@@ -185,5 +215,17 @@ public class CommandHandler {
      */
     public String getArgument() {
         return argument;
+    }
+
+    public LocalDateTime getDeadlineBy() {
+        return deadlineBy;
+    }
+
+    public LocalDateTime getEventFrom() {
+        return eventFrom;
+    }
+
+    public LocalDateTime getEventTo() {
+        return eventTo;
     }
 }

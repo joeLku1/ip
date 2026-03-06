@@ -1,35 +1,46 @@
 package clowns.task;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
+
 public class Events extends Task {
-    protected static final int OFFSET_FROM = 5;
-    protected static final int OFFSET_TO = 3;
+    protected LocalDateTime from;
+    protected LocalDateTime to;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd MMM uuuu HHmm")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
 
-    protected String from;
-    protected String to;
-
-    public Events(String description) {
-        super(description.substring(0, description.indexOf("/from")).trim());
-        this.from = description.substring(description.indexOf("/from") + OFFSET_FROM, description.indexOf("/to")).trim();
-        this.to = description.substring(description.indexOf("/to") + OFFSET_TO).trim();
+    public Events(String description, LocalDateTime from, LocalDateTime to) {
+        super(description);
+        this.from = from;
+        this.to = to;
+        if (this.to.isBefore(this.from)) {
+            throw new IllegalArgumentException("Event end date-time cannot be earlier than start date-time.");
+        }
     }
 
-    public void setFrom(String from) {
+    public void setFrom(LocalDateTime from) {
         this.from = from;
     }
 
-    public void setTo(String to) {
+    public void setTo(LocalDateTime to) {
         this.to = to;
     }
 
-    public String getFrom() {
+    public LocalDateTime getFrom() {
         return this.from;
     }
 
-    public String getTo() {
+    public LocalDateTime getTo() {
         return this.to;
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + this.from + " to: " + this.to + ")";
+        return "[E]" + super.toString() + " (from: " + this.from.format(DATE_TIME_FORMATTER)
+                + " to: " + this.to.format(DATE_TIME_FORMATTER) + ")";
     }
 }

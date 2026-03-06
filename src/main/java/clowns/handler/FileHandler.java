@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileHandler {
-    private static final Path filepath = Paths.get("ip", "src", "main", "java", "clowns", "data", "ClownList.txt");
+    private static final Path filepath = Paths.get( "src", "main", "java", "clowns", "data", "ClownList.txt");
 
     /**
      * Creates a new file at the specified filepath

@@ -1,10 +1,9 @@
 package clowns;
 import clowns.handlers.CommandHandler;
-import clowns.handlers.TaskList;
 import clowns.task.Deadline;
 import clowns.task.Events;
+import clowns.task.TaskList;
 import clowns.task.Todo;
-
 import java.util.Scanner;
 
 public class Clowns {

@@ -27,7 +27,7 @@ public class CommandHandler {
         this.argument = "";
         
         if (currentInput.isEmpty()) {
-            throw new ClownsException("Empty command entered. Please enter a valid command.");
+            throw new ClownsException("No clownery command entered. Please enter valid clownery.");
         }
         
         if (currentInput.equalsIgnoreCase("exit")) {
@@ -51,6 +51,15 @@ public class CommandHandler {
         }
     }
 
+    /**
+     * Validates the arguments for mark and unmark commands
+      * @param input the user input string
+      * @param command the command type ("mark" or "unmark")
+      * @param startIndex the index where the task number should start in the input string
+      * @param returnType the integer to return if validation is successful (MARK or UNMARK)
+      * @return returnType if validation is successful
+      * @throws ClownsException if the task number is missing, not a valid integer, or not positive
+     */
     private int validateMarkUnmark(String input, String command, int startIndex, int returnType) throws ClownsException {
         if (input.length() <= startIndex || input.substring(startIndex).trim().isEmpty()) {
             throw new ClownsException("Missing task number for '" + command + "'.\n  Usage: " + command + " <task number>");
@@ -68,6 +77,12 @@ public class CommandHandler {
         return returnType;
     }
 
+    /**
+     * Validates the arguments for the todo command
+      * @param input the user input string
+      * @return TODO if validation is successful
+      * @throws ClownsException if the description is missing or empty
+     */
     private int validateTodo(String input) throws ClownsException {
         if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
             throw new ClownsException("Todo description cannot be empty.\n  Usage: todo <description>");
@@ -76,6 +91,12 @@ public class CommandHandler {
         return TODO;
     }
 
+    /**
+     * Validates the arguments for the deadline command
+      * @param input the user input string
+      * @return DEADLINE if validation is successful
+      * @throws ClownsException if the description or date is missing, empty, or if the format is incorrect
+     */
     private int validateDeadline(String input) throws ClownsException {
         if (input.length() <= 9 || input.substring(9).trim().isEmpty()) {
             throw new ClownsException("Deadline description cannot be empty.\n  Usage: deadline <description> /by <date>");
@@ -95,6 +116,12 @@ public class CommandHandler {
         return DEADLINE;
     }
 
+    /**
+     * Validates the arguments for the event command
+      * @param input the user input string
+      * @return EVENT if validation is successful
+      * @throws ClownsException if the description, start time, or end time is missing, empty, or if the format is incorrect
+     */
     private int validateEvent(String input) throws ClownsException {
         if (input.length() <= 6 || input.substring(6).trim().isEmpty()) {
             throw new ClownsException("Event description cannot be empty.\n  Usage: event <description> /from <start> /to <end>");
@@ -121,6 +148,12 @@ public class CommandHandler {
         return EVENT;
     }
 
+    /**
+     * Validates the arguments for the delete command
+      * @param input the user input string
+      * @return DELETE if validation is successful
+      * @throws ClownsException if the task number is missing, not a valid integer, or not positive
+     */
     private int validateDelete(String input) throws ClownsException {
         if (input.length() <= 7 || input.substring(7).trim().isEmpty()) {
             throw new ClownsException("Missing task number for 'delete'.\n  Usage: delete <task number>");

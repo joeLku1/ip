@@ -70,7 +70,6 @@ public class Clowns {
         System.out.println("\n  Welcome, " + name + "! Let's clown together! Enter your command below:\n");
         
         boolean toContinue = true;
-        // Task[] inputStore = new Task[100];
         inputStore = new ArrayList<>();
         int count = 0;
         
@@ -122,19 +121,19 @@ public class Clowns {
                     break;
                 case CommandHandler.TODO:
                     inputStore.add(new Todo(commandHandler.getArgument()));
-                    printString("  todo added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
+                    printString("  ToDo added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
                     writeToFile();
                     break;
                 case CommandHandler.DEADLINE:
                     inputStore.add(new Deadline(commandHandler.getArgument()));
-                    printString("  deadline added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
+                    printString("  Deadline added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
                     writeToFile();
                     break;
                 case CommandHandler.EVENT:
                     inputStore.add(new Events(commandHandler.getArgument()));
-                    printString("  event added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
+                    printString("  Event added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
                     count++;
                     writeToFile();
                     break;

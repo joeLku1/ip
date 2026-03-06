@@ -1,12 +1,10 @@
 package clowns;
 import clowns.handlers.CommandHandler;
+import clowns.handlers.TaskList;
 import clowns.task.Deadline;
 import clowns.task.Events;
-import clowns.task.Task;
 import clowns.task.Todo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Clowns {
@@ -24,8 +22,9 @@ public class Clowns {
     private static final String LINE = "  ---------------------------------";
     private static final String LINE_N = "  ---------------------------------\n";
 
-    private static List<Task> inputStore;
-    private static clowns.handlers.FileHandler fileHandler;
+    private static TaskList taskList;
+    private static clowns.handlers.Storage storage;
+    
 
     /**
      * Print input string with lines before and after
@@ -46,12 +45,10 @@ public class Clowns {
         System.out.println("\n  Welcome, " + name + "! Let's clown together! Enter your command below:\n");
         
         boolean toContinue = true;
-        int count = 0;
-        List<Task> inputStore = new ArrayList<>();
         
-        fileHandler = new clowns.handlers.FileHandler();
-        fileHandler.createFile();
-        fileHandler.loadFromFile();
+        storage = new clowns.handlers.Storage();
+        storage.createFile();
+        taskList = new TaskList(storage.loadFromFile());
 
         CommandHandler commandHandler = new CommandHandler();
 
@@ -70,59 +67,54 @@ public class Clowns {
                     break;
                 case CommandHandler.LIST:
                     String listOutput = "  Here is your list of clownery:\n";
-                    for (int i = 0; i < count; i++) {
-                        listOutput = listOutput.concat("  " + (i + 1) + ". " + inputStore.get(i).toString() + "\n");
+                    for (int i = 0; i < taskList.size(); i++) {
+                        listOutput = listOutput.concat("  " + (i + 1) + ". " + taskList.get(i).toString() + "\n");
                     }
                     printString(listOutput);
                     break;
                 case CommandHandler.MARK:
                     int indexMark = Integer.parseInt(commandHandler.getArgument()) - 1;
-                    if (indexMark >= 0 && indexMark < count) {
-                        inputStore.get(indexMark).markAsDone();
+                    if (taskList.isValidIndex(indexMark)) {
+                        taskList.mark(indexMark);
                         printString("  Amazing work! Marked " + (indexMark + 1) + " as done.");
-                        fileHandler.writeToFile(inputStore);
+                        storage.writeToFile(taskList.asList());
                     } else {
-                        printString("  Task number " + (indexMark + 1) + " does not exist. You have " + count + " tasks.");
+                        printString("  Task number " + (indexMark + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                     }
                     break;
                 case CommandHandler.UNMARK:
                     int indexUnmark = Integer.parseInt(commandHandler.getArgument()) - 1;
-                    if (indexUnmark >= 0 && indexUnmark < count) {
-                        inputStore.get(indexUnmark).markAsUndone();
-                        printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + inputStore.get(indexUnmark).toString());
-                        fileHandler.writeToFile(inputStore);
+                    if (taskList.isValidIndex(indexUnmark)) {
+                        taskList.unmark(indexUnmark);
+                        printString("  What a clown. Task " + (indexUnmark + 1) + " is now unmarked.\n  " + taskList.get(indexUnmark).toString());
+                        storage.writeToFile(taskList.asList());
                     } else {
-                        printString("  Task number " + (indexUnmark + 1) + " does not exist. You have " + count + " tasks.");
+                        printString("  Task number " + (indexUnmark + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                     }
                     break;
                 case CommandHandler.TODO:
-                    inputStore.add(new Todo(commandHandler.getArgument()));
-                    printString("  ToDo added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
-                    count++;
-                    fileHandler.writeToFile(inputStore);
+                    taskList.add(new Todo(commandHandler.getArgument()));
+                    printString("  ToDo added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
+                    storage.writeToFile(taskList.asList());
                     break;
                 case CommandHandler.DEADLINE:
-                    inputStore.add(new Deadline(commandHandler.getArgument()));
-                    printString("  Deadline added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
-                    count++;
-                    fileHandler.writeToFile(inputStore);
+                    taskList.add(new Deadline(commandHandler.getArgument()));
+                    printString("  Deadline added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
+                    storage.writeToFile(taskList.asList());
                     break;
                 case CommandHandler.EVENT:
-                    inputStore.add(new Events(commandHandler.getArgument()));
-                    printString("  Event added: " + userInput + "\n  You now have " + inputStore.size() + " clownery in total.");
-                    count++;
-                    fileHandler.writeToFile(inputStore);
+                    taskList.add(new Events(commandHandler.getArgument()));
+                    printString("  Event added: " + userInput + "\n  You now have " + taskList.size() + " clownery in total.");
+                    storage.writeToFile(taskList.asList());
                     break;
                 case CommandHandler.DELETE:
                     int indexDelete = Integer.parseInt(commandHandler.getArgument()) - 1;
-                    if (indexDelete >= 0 && indexDelete < count) {
-                        String deletedTask = inputStore.get(indexDelete).toString();
-                        inputStore.remove(indexDelete);
-                        count--;
-                        printString("  Deleted task: " + deletedTask + "\n  You now have " + count + " clownery in total.");
-                        fileHandler.writeToFile(inputStore);
+                    if (taskList.isValidIndex(indexDelete)) {
+                        String deletedTask = taskList.delete(indexDelete).toString();
+                        printString("  Deleted task: " + deletedTask + "\n  You now have " + taskList.size() + " clownery in total.");
+                        storage.writeToFile(taskList.asList());
                     } else {
-                        printString("  Task number " + (indexDelete + 1) + " does not exist. You have " + count + " tasks.");
+                        printString("  Task number " + (indexDelete + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                     }
                     break;
                 default:

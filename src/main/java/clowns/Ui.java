@@ -167,10 +167,17 @@ public class Ui {
         }
     }
 
+    /**
+     * Close the scanner object
+     */
     public void closeScanner() {
         scanner.close();
     }
 
+    /**
+     * Custom print function with lines
+     * @param output String to be printed
+     */
     private void printString(String output) {
         System.out.println(LINE);
         System.out.println(output);

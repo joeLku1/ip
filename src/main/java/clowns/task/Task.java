@@ -8,6 +8,10 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Mark X on status
+     * @return X if task is marked done, else whitespace 
+     */
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }

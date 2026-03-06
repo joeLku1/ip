@@ -78,6 +78,11 @@ public class FileHandler {
         return inputStore;
     }
 
+    /**
+     * Parses a stored deadline string and converts it into a Deadline object
+     * @param raw raw string containing the deadline
+     * @return a Deadline object with parsed information
+     */
     private Deadline parseDeadlineFromStorage(String raw) {
         int markerIndex = raw.lastIndexOf("(by:");
         if (markerIndex == -1) {
@@ -92,6 +97,11 @@ public class FileHandler {
         return new Deadline(description, by);
     }
 
+    /**
+     * Parses a stored event string and converts it into an Events object
+     * @param raw raw string containing the event
+     * @return an Events object with parsed information
+     */
     private Events parseEventFromStorage(String raw) {
         int fromIndex = raw.lastIndexOf("(from:");
         int toIndex = raw.lastIndexOf(" to:");
@@ -109,6 +119,11 @@ public class FileHandler {
         return new Events(description, from, to);
     }
 
+    /**
+     * Parses a date-time string from storage and converts it into a LocalDateTime object, handling any parsing exceptions
+     * @param value
+     * @return
+     */
     private LocalDateTime parseDateTime(String value) {
         try {
             return LocalDateTime.parse(value, DATE_TIME_FORMATTER);

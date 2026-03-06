@@ -174,6 +174,13 @@ public class CommandHandler {
         return EVENT;
     }
 
+    /**
+     * Validates the user-entered date-time string, converts into a LocalDateTime object, and handles any parsing exceptions
+     * @param value user-entered date-time string
+     * @param label a label to indicate which date-time is being validated (by/to/from)
+     * @return a LocalDateTime object representing the validated date-time
+     * @throws ClownsException
+     */
     private LocalDateTime validateDateTime(String value, String label) throws ClownsException {
         try {
             return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
@@ -234,15 +241,27 @@ public class CommandHandler {
     public String getArgument() {
         return argument;
     }
-
+    
+    /**
+     * Return "/by" condition of a deadline
+     * @return LocalDateTime object
+     */
     public LocalDateTime getDeadlineBy() {
         return deadlineBy;
     }
 
+    /**
+     * Return "/from" condition of an event
+     * @return LocalDateTime object
+     */
     public LocalDateTime getEventFrom() {
         return eventFrom;
     }
 
+    /**
+     * Return "/to" condition of an event
+     * @return LocalDateTime object
+     */
     public LocalDateTime getEventTo() {
         return eventTo;
     }

@@ -143,6 +143,22 @@ public class Ui {
                     printString("  Task number " + (indexDelete + 1) + " does not exist. You have " + taskList.size() + " tasks.");
                 }
                 break;
+            case CommandHandler.FIND:
+                String keyword = commandHandler.getArgument().toLowerCase();
+                String findOutput = "  Here are the matching clownery tasks:\n";
+                int matchCount = 0;
+                for (int i = 0; i < taskList.size(); i++) {
+                    if (taskList.get(i).getDescription().toLowerCase().contains(keyword)) {
+                        matchCount++;
+                        findOutput = findOutput.concat("  " + matchCount + ". " + taskList.get(i).toString() + "\n");
+                    }
+                }
+                if (matchCount == 0) {
+                    printString("  No matching clownery found for: " + commandHandler.getArgument());
+                } else {
+                    printString(findOutput);
+                }
+                break;
             default:
                 break;
             }

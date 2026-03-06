@@ -16,6 +16,7 @@ public class CommandHandler {
     public static final int DEADLINE = 5;
     public static final int EVENT = 6;
     public static final int DELETE = 7;
+    public static final int FIND = 8;
     public static final int INVALID = -1;
 
     private String currentInput;
@@ -62,8 +63,11 @@ public class CommandHandler {
             return validateEvent(currentInput);
         } else if (currentInput.length() >= 6 && currentInput.substring(0, 6).equalsIgnoreCase("delete")) {
             return validateDelete(currentInput);
+        } else if (currentInput.length() >= 4 && currentInput.substring(0, 4).equalsIgnoreCase("find")) {
+            return validateFind(currentInput);
         } else {
-            throw new ClownsException("Unknown command: '" + currentInput.split(" ")[0] + "'.\n  Valid commands: todo, deadline, event, mark, unmark, delete, list, exit");
+            throw new ClownsException("Unknown command: '" + currentInput.split(" ")[0]
+                    + "'.\n  Valid commands: todo, deadline, event, mark, unmark, delete, find, list, exit");
         }
     }
 
@@ -199,6 +203,20 @@ public class CommandHandler {
             throw new ClownsException("Invalid task number: '" + numStr + "'. Please enter a valid number.");
         }
         return DELETE;
+    }
+
+    /**
+     * Validates the arguments for the find command
+     * @param input the user input string
+     * @return FIND if validation is successful
+     * @throws ClownsException if the keyword is missing or empty
+     */
+    private int validateFind(String input) throws ClownsException {
+        if (input.length() <= 5 || input.substring(5).trim().isEmpty()) {
+            throw new ClownsException("Find keyword cannot be empty.\n  Usage: find <keyword>");
+        }
+        this.argument = input.substring(5).trim();
+        return FIND;
     }
 
     /**

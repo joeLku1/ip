@@ -1,11 +1,11 @@
-$$$$$$\   $$\      $$$$$$\   $$\      $$\ $$\   $$\
+$$$$$$\   $$\       /$$$$\   $$\      $$\ $$\   $$\
 $$  __$$\ $$ |     $$  __$$\ $$ | $\  $$ |$$$\  $$ |
 $$ /  \__|$$ |     $$ /  $$ |$$ |$$$\ $$ |$$$$\ $$ |
 $$ |      $$ |     $$ |  $$ |$$ $$ $$\$$ |$$ $$\$$ |
 $$ |      $$ |     $$ |  $$ |$$$$  _$$$$ |$$ \$$$$ |
 $$ |  $$\ $$ |     $$ |  $$ |$$$  / \$$$ |$$ |\$$$ |
 \$$$$$$  |$$$$$$$$\ $$$$$$  |$$  /   \$$ |$$ | \$$ |
- \______/ \________|\______/ \__/     \__|\__|  \__|
+\______/ \________|\______/ \___/     \__|\__|  \__|
 
   Hello, I am clowning!
   ---------------------------------
@@ -15,7 +15,55 @@ $$ |  $$\ $$ |     $$ |  $$ |$$$  / \$$$ |$$ |\$$$ |
   Welcome, test! Let's clown together! Enter your command below:
 
   ---------------------------------
-hello
+  Error: Unknown command: 'hello'.
+  Valid commands: todo, deadline, event, mark, unmark, delete, find, list, exit
+  ---------------------------------
+
+  ---------------------------------
+  ToDo added: todo CS2113 IP Markdown
+  You now have 1 clownery in total.
+  ---------------------------------
+
+  ---------------------------------
+  Deadline added: deadline push CS2113 branch /by 10-03-2026 2359
+  You now have 2 clownery in total.
+  ---------------------------------
+
+  ---------------------------------
+  Error: Deadline description before '/by' cannot be empty.
+  ---------------------------------
+
+  ---------------------------------
+  Event added: event Week 7 open /from 09-03-2026 1400 /to 09-03-2026 1600
+  You now have 3 clownery in total.
+  ---------------------------------
+
+  ---------------------------------
+  Here is your list of clownery:
+  1. [T][ ] CS2113 IP Markdown
+  2. [D][ ] push CS2113 branch (by: 10 Mar 2026 2359)
+  3. [E][ ] Week 7 open (from: 09 Mar 2026 1400 to: 09 Mar 2026 1600)
+
+  ---------------------------------
+
+  ---------------------------------
+  Amazing work! Marked 1 as done.
+  ---------------------------------
+
+  ---------------------------------
+  What a clown. Task 1 is now unmarked.
+  [T][ ] CS2113 IP Markdown
+  ---------------------------------
+
+  ---------------------------------
+  Deleted task: [T][ ] CS2113 IP Markdown
+  You now have 2 clownery in total.
+  ---------------------------------
+
+  ---------------------------------
+  Here are the matching clownery tasks:
+  1. [E][ ] Week 7 open (from: 09 Mar 2026 1400 to: 09 Mar 2026 1600)
+
   ---------------------------------
 
   ---------------------------------

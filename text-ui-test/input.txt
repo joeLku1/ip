@@ -1,4 +1,12 @@
 test
 hello
-todo 1
+todo CS2113 IP Markdown
+deadline push CS2113 branch /by 10-03-2026 2359
+deadline /by 10-03-2026 2359
+event Week 7 open /from 09-03-2026 1400 /to 09-03-2026 1600
+list
 mark 1
+unmark 1
+delete 1
+find week
+exit

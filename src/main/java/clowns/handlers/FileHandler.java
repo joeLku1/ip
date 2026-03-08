@@ -14,13 +14,14 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FileHandler {
     private static final Path filepath = Paths.get( "src", "main", "java", "clowns", "data", "ClownList.txt");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter STORAGE_DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
-            .appendPattern("dd-MM-uuuu HHmm")
-            .toFormatter()
+            .appendPattern("dd MMM uuuu HHmm")
+            .toFormatter(Locale.ENGLISH)
             .withResolverStyle(ResolverStyle.STRICT);
 
     /**
@@ -126,9 +127,9 @@ public class FileHandler {
      */
     private LocalDateTime parseDateTime(String value) {
         try {
-            return LocalDateTime.parse(value, DATE_TIME_FORMATTER);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date-time in storage");
+            return LocalDateTime.parse(value, STORAGE_DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException ignored) {
+            throw new IllegalArgumentException("Invalid date-time in storage: " + value);
         }
     }
    
